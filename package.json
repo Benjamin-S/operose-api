@@ -1,0 +1,16 @@
+{
+  "name": "operose_db",
+  "version": "1.0.0",
+  "main": "handler.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "serverless-bundle test"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.799.0",
+    "serverless-bundle": "3.2.0",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-offline": "^5.3.3"
+  },
+  "dependencies": {}
+}
