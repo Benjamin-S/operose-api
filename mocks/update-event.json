@@ -1,0 +1,6 @@
+{
+	"body": "{\"role\":\"user\"}",
+	"pathParameters": {
+		"id": "TestUser"
+	}
+}

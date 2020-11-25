@@ -42,26 +42,23 @@ provider:
   #environment:
   #  SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
 
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  # you can overwrite defaults here
+  #  stage: dev
+  #  region: us-east-1
 
-# you can add statements to the Lambda function's IAM Role here
-# iamRoleStatements:
-#   - Effect: "Allow"
-#     Action:
-#       - "dynamodb"
-#     Resource: "*"
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
-
+  # 'iamRoleStatements' defines the permission policy for the Lambda function.
+  # In this case Lambda functions are granted with permissions to access DynamoDB.
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
+      Resource: "arn:aws:dynamodb:us-east-1:*:*"
 # you can define service wide environment variables here
 #  environment:
 #    variable1: value1
@@ -76,12 +73,55 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  create:
+    # Defines an HTTP API endpoint that calls the main function in create.js
+    # - path: url path is /users
+    # - method: POST request
+    handler: create.main
     events:
       - http:
-          path: hello
+          path: users
+          method: post
+  get:
+    # Defines an HTTP API endpoint that calls the main function in get.js
+    # - path: url path is /users/{id}
+    # - method: GET request
+    handler: get.main
+    events:
+      - http:
+          path: users/{id}
           method: get
+
+  update:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /users/{id}
+    # - method: PUT request
+    handler: update.main
+    events:
+      - http:
+          path: users/{id}
+          method: put
+
+  list:
+    # Defines an HTTP API endpoint that calls the main function in list.js
+    # - path: url path is /users
+    # - method: GET request
+    handler: list.main
+    events:
+      - http:
+          path: users
+          method: get
+
+  delete:
+    # Defines an HTTP API endpoint that calls the main function in delete.js
+    # - path: url path is /users/{id}
+    # - method: DELETE request
+    handler: delete.main
+    events:
+      - http:
+          path: users/{id}
+          method: delete
+
   # addUser:
   #   handler: handler.addUser
   #   events:
